@@ -1,0 +1,29 @@
+version: "3"
+services:
+  client:
+    container_name: client
+    image: client
+    build: './client'
+    ports:
+      - "3000:3000"
+    links:
+      - server
+  server:
+    container_name: server
+    image: server
+    depends_on:
+      - mongo
+    restart: always
+    build: './server'
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - /home/zineb/mong/data:/data/db
+    ports:
+      - '27018:27017'
+    restart: unless-stopped
